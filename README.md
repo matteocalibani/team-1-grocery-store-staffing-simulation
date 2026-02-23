@@ -1,5 +1,19 @@
 # team-1-grocery-store-staffing-simulation
 
+Matteo Calibani
+Seth Hansman
+Rita Petros
+Derek Robinson
+Akash Sunilkumar
+
+A grocery store wants a code developed through object-oriented programming which will take different variables or facts about the grocery stores' capabilities and see if new policies fit the needs of the store and customers.  
+
+
+
+
+
+
+
 Assumptions/rules/thoughts before first meeting:
 - Random time for each transaction is 0s-30s
 - Cashiers will fill express 19- then express 9- then other lanes at start of day
