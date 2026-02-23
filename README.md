@@ -23,3 +23,5 @@ Assumptions/rules/thoughts before first meeting:
   * average cashier idling time
   * max cashier idling time
   * cashier idle distribution over day
+
+  We need to update this to follow the instructions, otherwise good job team!
