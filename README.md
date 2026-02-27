@@ -1,5 +1,5 @@
 # team-1-grocery-store-staffing-simulation
-# Team Members
+Team Members
 - Matteo Calibani
 - Seth Hansman
 - Rita Petros
