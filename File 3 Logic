@@ -2,7 +2,15 @@ To do
 - cashier changeover (section 4.1/4.2?)
 - what if no queues available (section 2.1/4.?)
   -add wait queue for customers similar to cashiers? (section 2.4)
-- learn queue library
+- learn queue,deque libraries
+  - try array/vector of queues?
+- learn error handling for input files
+
+Assumptions
+- customers will priority rules unless priority lines are much smaller than other lines
+- assume random time added to service time ranges 0-30s *subject to change
+- lane priority will be priority 19- then priority 9- then rest of lanes
+- any payment type can be used for any lane
 
 
 
@@ -37,10 +45,7 @@ Shift start    Shift end
 2. Storage
 2.1 Customer information
 2D vector should also contain wait time (only considering time spent in queue)
-- wait time can be stored and incremented each second or calculated 
-  by storing time customer entered queue 
-  (incrementing each second similar to idle time should be fine?)
-  (memory usage vs calculation time not sure which is best to conserve)
+- wait time =(time when leaving queue-arrival time)
 * what happens if customers are waiting but there are no cashiers - no queues
   - ¯\_ (ツ)_/¯
 
@@ -83,7 +88,10 @@ can place customers/cashiers in priority queue or leave in 2D vecetor if properl
     2.1 Place cashier depending on lane priority
   3. Check queues
     3.1 service counter--
-    3.2 if service counter==0 remove customer from queue and set service counter
+    3.2 if service counter==0 remove customer from queue
+        3.2.1 calculate wait time
+        3.2.2 set service counter
+        3.2.3 update lane queue time
     3.3 if queues are very different lengths move customers to shorter queues
       (if new queue opens or one queue is much longer than others for some reason)
   4. Check customer queue
@@ -95,6 +103,41 @@ cashier changeover logic too hard will try later
 
 4.3 Lane logic
 each lane will have their own queue with information on each stored in lane array (section 2.3)
+lane 1: express 9- lane 2: express 19-
+* lane priority 2,1,3,4,5,6,7,8?
+lane queue time is only calculated when queue changes to save calculation time
+Explanation of 4.1 3.-4.
+  3. updating queues
+  - service counter is a timer for the customer currently being served by cashier
+  - service counter is decremented each second before rest of logic is executed
+  - if the service counter is 0 then the cashier is available and the next customer is served
+  - wait time is calculated by the time the customer leaves the queue-customers arrival time
+    *if customers are unsorted simulation will still run but wait times will be very large
+  - service counter is set to service time of next customer+some random amount 
+    based on maximum random time set in configurations menu (section 3)
+  - lane queue time is updated
+  - if queues are of very different length some customers may move to end of other queues
+    *not sure if this part is needed
+  4. adding to queues
+  - if time<=next arrival time, customer moved to lanes
+  - placement depends on the number of items the customer has and the lane queue time
+  - possible situations
+    - customer does not count as priority, cashier is available and queue is empty->customer skips queue
+    - priority cashier is available, queue is empty-> customer skips queue regardless of # items
+  - otherwise customer must choose lane based on equation
+    - lane length=total items in queue*some amount for priority queues
+      *subject to change
+    - customers choose lane based on smallest lane length (can't see customer being served for now)
+    - customers that do not qualify for priority queues may enter priority queues 
+      if there is a significant difference in length
+    - customers that qualify for priority queues may enter any lane
+  - once customer is added to queue, lane queue time is updated
+  - section is contained in while loop so any number of customers can be moved to lanes
+    if they arrive at the same time
+    
+
+
+
 
 
 
