@@ -1,0 +1,101 @@
+To do
+- cashier changeover (section 4.1/4.2?)
+- what if no queues available (section 2.1/4.?)
+  -add wait queue for customers similar to cashiers? (section 2.4)
+- learn queue library
+
+
+
+1. Input files
+24h time used
+time can be stored as seconds or formated to remove spaces and colons (prefer as seconds?)
+ex 13:02:34 stored as 46954 or 130234
+
+1.1 Expected input customer file
+Information passed
+- customer arrival time
+- number of items
+- payment type (as integer 1 cash 2 debit 3 cheque)
+- maybe expected service time (items*5+payment type time without random added)
+file should be sorted by arrival time to reduce computation time
+will be stored as 2D vector (extra columns initialized as 0 at same time)
+Arrival time(s)  #items  payment type    service time?
+33000            14      2               190
+33019            6       1               90
+
+1.2 Expected input cashier file
+Information passed
+- shift start
+- shift end
+file should be sorted by arrival time to reduce computation time
+will be stored as 2D vector (extra columns initialized as 0 at same time)
+Shift start    Shift end
+32400          43200
+36000          46800
+
+
+2. Storage
+2.1 Customer information
+2D vector should also contain wait time (only considering time spent in queue)
+- wait time can be stored and incremented each second or calculated 
+  by storing time customer entered queue 
+  (incrementing each second similar to idle time should be fine?)
+  (memory usage vs calculation time not sure which is best to conserve)
+* what happens if customers are waiting but there are no cashiers - no queues
+  - ¯\_ (ツ)_/¯
+
+2.2 Cashier information
+2D vector should also contatin idle time
+- idle time incremented if not serving anyone and nobody in queue
+
+2.3 Lanes information
+information on all lanes will be stored as 2D array
+Important information
+- if lane is open (0/1)
+- lane queue time (total items in queue?)(will change calculation later)
+- service counter (service time + rand()%max_random_time)
+  - max random time in configuration (section 3)
+- 
+
+2.4 Cashier queue
+* what if there are more cashiers available than lanes?
+  - cashiers will be added to special queue and have idle time incremented
+
+3. Configuration
+Section at top of file to set certain settings for the simulation
+will include
+- lane priority order
+- maximum random time added to service time
+- 
+
+4. Simulation logic
+Code will be contained in a for loop 
+- opening and closing will depend on cashier start and end times
+* what if not all customers are finished being served by closing time
+  - # leftover customers is displayed in results (section 5)
+can place customers/cashiers in priority queue or leave in 2D vecetor if properly sorted?
+
+4.1 Update order
+  1. Check current cashiers shift end (formula for shift end vs current service)
+    1.1 set flag queue closing
+    1.2 move required customers to other queues
+  2. Check if new cashier available
+    2.1 Place cashier depending on lane priority
+  3. Check queues
+    3.1 service counter--
+    3.2 if service counter==0 remove customer from queue and set service counter
+    3.3 if queues are very different lengths move customers to shorter queues
+      (if new queue opens or one queue is much longer than others for some reason)
+  4. Check customer queue
+    4.1 Place customer in queue based on lane queue time and items
+      4.1.1 update lane queue time
+
+4.2 Cashier Logic
+cashier changeover logic too hard will try later
+
+4.3 Lane logic
+each lane will have their own queue with information on each stored in lane array (section 2.3)
+
+
+
+
